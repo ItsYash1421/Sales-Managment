@@ -95,11 +95,14 @@
   gap: 4px;
   max-height: 320px;
   overflow-y: auto;
+  overflow-x: hidden;
   margin-top: 8px;
+  pointer-events: auto;
 }
 
 .filter-options.scrollable {
-  max-height: 280px;
+  max-height: 350px;
+  overflow-y: scroll;
 }
 
 .filter-option {
@@ -112,6 +115,8 @@
   transition: background 0.2s ease;
   font-size: 13px;
   color: #374151;
+  flex-shrink: 0;
+  min-height: 32px;
 }
 
 .filter-option:hover {
@@ -173,6 +178,27 @@
 
 .range-input-group input[type="date"] {
   font-family: inherit;
+}
+
+.apply-filter-btn {
+  padding: 8px 16px;
+  background: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 4px;
+}
+
+.apply-filter-btn:hover {
+  background: #6d28d9;
+}
+
+.apply-filter-btn:active {
+  background: #5b21b6;
 }
 
 /* Scrollbar styling */

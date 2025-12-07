@@ -25,8 +25,21 @@ export const getSalesData = async (filters = {}) => {
     
     if (filters.ageMin || filters.ageMax) {
       query.age = {};
-      if (filters.ageMin) query.age.$gte = parseInt(filters.ageMin);
-      if (filters.ageMax) query.age.$lte = parseInt(filters.ageMax);
+      if (filters.ageMin && filters.ageMin !== '') {
+        const minAge = parseInt(filters.ageMin);
+        if (!isNaN(minAge) && minAge >= 0) {
+          query.age.$gte = minAge;
+        }
+      }
+      if (filters.ageMax && filters.ageMax !== '') {
+        const maxAge = parseInt(filters.ageMax);
+        if (!isNaN(maxAge) && maxAge >= 0) {
+          query.age.$lte = maxAge;
+        }
+      }
+      if (Object.keys(query.age).length === 0) {
+        delete query.age;
+      }
     }
     
     if (filters.productCategory && filters.productCategory.length > 0) {
@@ -103,8 +116,22 @@ export const getStatistics = async (filters = {}) => {
     
     if (filters.ageMin || filters.ageMax) {
       query.age = {};
-      if (filters.ageMin) query.age.$gte = parseInt(filters.ageMin);
-      if (filters.ageMax) query.age.$lte = parseInt(filters.ageMax);
+      if (filters.ageMin && filters.ageMin !== '') {
+        const minAge = parseInt(filters.ageMin);
+        if (!isNaN(minAge) && minAge >= 0) {
+          query.age.$gte = minAge;
+        }
+      }
+      if (filters.ageMax && filters.ageMax !== '') {
+        const maxAge = parseInt(filters.ageMax);
+        if (!isNaN(maxAge) && maxAge >= 0) {
+          query.age.$lte = maxAge;
+        }
+      }
+      // Remove age query if no valid conditions
+      if (Object.keys(query.age).length === 0) {
+        delete query.age;
+      }
     }
     
     if (filters.productCategory && filters.productCategory.length > 0) {

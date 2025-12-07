@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/FilterPanel.css';
 
 const FilterPanel = ({ filters, setFilters, filterOptions }) => {
@@ -11,7 +11,19 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
     paymentMethod: false,
     dateRange: false
   });
+  
+  const [tempAgeMax, setTempAgeMax] = useState('');
+  const [tempDateFrom, setTempDateFrom] = useState('');
+  const [tempDateTo, setTempDateTo] = useState('');
+  
+  const panelRef = useRef(null);
 
+  useEffect(() => {
+    setTempAgeMin(filters.ageMin || '');
+    setTempAgeMax(filters.ageMax || '');
+    setTempDateFrom(filters.dateFrom || '');
+    setTempDateTo(filters.dateTo || '');
+  }, [filters.ageMin, filters.ageMax, filters.dateFrom, filters.dateTo]);
 
   useEffect(() => {
     const closeAllDropdowns = () => {
@@ -26,12 +38,32 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
       });
     };
 
-    window.addEventListener('scroll', closeAllDropdowns, true);
+   
+    const handleClickOutside = (event) => {
+      if (panelRef.current && !panelRef.current.contains(event.target)) {
+        closeAllDropdowns();
+      }
+    };
+
+    
+    const handleScroll = (event) => {
+      const target = event.target;
+      
+      if (target.classList && (target.classList.contains('filter-options') || target.classList.contains('filter-range'))) {
+        return;
+      }
+     
+      closeAllDropdowns();
+    };
+
     window.addEventListener('closeAllDropdowns', closeAllDropdowns);
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('scroll', handleScroll, true);
     
     return () => {
-      window.removeEventListener('scroll', closeAllDropdowns, true);
       window.removeEventListener('closeAllDropdowns', closeAllDropdowns);
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
     };
   }, []);
 
@@ -48,7 +80,7 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
         dateRange: false
       });
     } else {
-      // Close all other dropdowns (including sorting dropdown)
+     
       window.dispatchEvent(new Event('closeAllDropdowns'));
       
       const rect = event.currentTarget.getBoundingClientRect();
@@ -79,18 +111,22 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
     }));
   };
 
-  const handleAgeChange = (type, value) => {
+  const applyAgeFilter = () => {
     setFilters(prev => ({
       ...prev,
-      [type]: value
+      ageMin: tempAgeMin,
+      ageMax: tempAgeMax
     }));
+    setExpandedSections(prev => ({ ...prev, ageRange: false }));
   };
 
-  const handleDateChange = (type, value) => {
+  const applyDateFilter = () => {
     setFilters(prev => ({
       ...prev,
-      [type]: value
+      dateFrom: tempDateFrom,
+      dateTo: tempDateTo
     }));
+    setExpandedSections(prev => ({ ...prev, dateRange: false }));
   };
 
   const clearFilters = () => {
@@ -120,7 +156,7 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
   };
 
   return (
-    <div className="filter-panel">
+    <div className="filter-panel" ref={panelRef}>
       <div className="filters-horizontal">
         {/* Reset Filter Button */}
         <button className="reset-filter-btn-main" onClick={clearFilters} title="Reset all filters">
@@ -195,8 +231,8 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
               <input
                 type="number"
                 placeholder="0"
-                value={filters.ageMin || ''}
-                onChange={(e) => handleAgeChange('ageMin', e.target.value)}
+                value={tempAgeMin}
+                onChange={(e) => setTempAgeMin(e.target.value)}
                 min="0"
                 max="120"
               />
@@ -206,12 +242,15 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
               <input
                 type="number"
                 placeholder="120"
-                value={filters.ageMax || ''}
-                onChange={(e) => handleAgeChange('ageMax', e.target.value)}
+                value={tempAgeMax}
+                onChange={(e) => setTempAgeMax(e.target.value)}
                 min="0"
                 max="120"
               />
             </div>
+            <button className="apply-filter-btn" onClick={applyAgeFilter}>
+              Apply
+            </button>
           </div>
         )}
       </div>
@@ -302,18 +341,21 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
               <label>From Date</label>
               <input
                 type="date"
-                value={filters.dateFrom || ''}
-                onChange={(e) => handleDateChange('dateFrom', e.target.value)}
+                value={tempDateFrom}
+                onChange={(e) => setTempDateFrom(e.target.value)}
               />
             </div>
             <div className="range-input-group">
               <label>To Date</label>
               <input
                 type="date"
-                value={filters.dateTo || ''}
-                onChange={(e) => handleDateChange('dateTo', e.target.value)}
+                value={tempDateTo}
+                onChange={(e) => setTempDateTo(e.target.value)}
               />
             </div>
+            <button className="apply-filter-btn" onClick={applyDateFilter}>
+              Apply
+            </button>
           </div>
         )}
       </div>

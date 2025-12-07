@@ -101,15 +101,11 @@ const Dashboard = () => {
     setCurrentPage(1);
   }, []);
 
-  const handleSortChange = useCallback((newSortBy) => {
-    if (newSortBy === sortBy) {
-      setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(newSortBy);
-      setSortOrder('asc');
-    }
+  const handleSortChange = useCallback((newSortBy, newSortOrder) => {
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
     setCurrentPage(1);
-  }, [sortBy]);
+  }, []);
 
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);

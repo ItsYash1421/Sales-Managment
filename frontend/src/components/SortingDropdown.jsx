@@ -6,12 +6,15 @@ const SortingDropdown = ({ sortBy, sortOrder, onSortChange }) => {
   const dropdownRef = useRef(null);
 
   const sortOptions = [
-    { value: 'date', label: 'Date' },
-    { value: 'quantity', label: 'Quantity' },
-    { value: 'customerName', label: 'Customer Name (A-Z)' }
+    { value: 'date-desc', sortBy: 'date', sortOrder: 'desc', label: 'Date: New to Old' },
+    { value: 'date-asc', sortBy: 'date', sortOrder: 'asc', label: 'Date: Old to New' },
+    { value: 'quantity-desc', sortBy: 'quantity', sortOrder: 'desc', label: 'Quantity: High to Low' },
+    { value: 'quantity-asc', sortBy: 'quantity', sortOrder: 'asc', label: 'Quantity: Low to High' },
+    { value: 'customerName-asc', sortBy: 'customerName', sortOrder: 'asc', label: 'Customer Name: A-Z' },
+    { value: 'customerName-desc', sortBy: 'customerName', sortOrder: 'desc', label: 'Customer Name: Z-A' }
   ];
 
-  const currentOption = sortOptions.find(opt => opt.value === sortBy);
+  const currentOption = sortOptions.find(opt => opt.sortBy === sortBy && opt.sortOrder === sortOrder);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -39,14 +42,14 @@ const SortingDropdown = ({ sortBy, sortOrder, onSortChange }) => {
     };
   }, []);
 
-  const handleSelect = (value) => {
-    onSortChange(value);
+  const handleSelect = (option) => {
+    onSortChange(option.sortBy, option.sortOrder);
     setIsOpen(false);
   };
 
   const handleToggle = (event) => {
     if (!isOpen) {
-      // Close all other dropdowns
+     
       window.dispatchEvent(new Event('closeAllDropdowns'));
       
       const rect = event.currentTarget.getBoundingClientRect();
@@ -85,14 +88,12 @@ const SortingDropdown = ({ sortBy, sortOrder, onSortChange }) => {
           {sortOptions.map(option => (
             <div
               key={option.value}
-              className={`sorting-option ${sortBy === option.value ? 'active' : ''}`}
-              onClick={() => handleSelect(option.value)}
+              className={`sorting-option ${sortBy === option.sortBy && sortOrder === option.sortOrder ? 'active' : ''}`}
+              onClick={() => handleSelect(option)}
             >
               <span className="option-label">{option.label}</span>
-              {sortBy === option.value && (
-                <span className="option-order">
-                  {sortOrder === 'asc' ? '↑' : '↓'}
-                </span>
+              {sortBy === option.sortBy && sortOrder === option.sortOrder && (
+                <span className="option-checkmark">✓</span>
               )}
             </div>
           ))}
