@@ -11,7 +11,9 @@ export const getSalesData = async (filters = {}) => {
     if (filters.search) {
       query.$or = [
         { customerName: { $regex: filters.search, $options: 'i' } },
-        { phoneNumber: { $regex: filters.search, $options: 'i' } }
+        { phoneNumber: { $regex: filters.search, $options: 'i' } },
+        { customerId: { $regex: filters.search, $options: 'i' } },
+        { productId: { $regex: filters.search, $options: 'i' } }
       ];
     }
     
@@ -47,7 +49,8 @@ export const getSalesData = async (filters = {}) => {
     }
     
     if (filters.tags && filters.tags.length > 0) {
-      query.tags = { $in: filters.tags };
+      const tagRegex = filters.tags.map(tag => tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+      query.tags = { $regex: tagRegex, $options: 'i' };
     }
     
     if (filters.paymentMethod && filters.paymentMethod.length > 0) {
@@ -102,7 +105,9 @@ export const getStatistics = async (filters = {}) => {
     if (filters.search) {
       query.$or = [
         { customerName: { $regex: filters.search, $options: 'i' } },
-        { phoneNumber: { $regex: filters.search, $options: 'i' } }
+        { phoneNumber: { $regex: filters.search, $options: 'i' } },
+        { customerId: { $regex: filters.search, $options: 'i' } },
+        { productId: { $regex: filters.search, $options: 'i' } }
       ];
     }
     
@@ -128,7 +133,6 @@ export const getStatistics = async (filters = {}) => {
           query.age.$lte = maxAge;
         }
       }
-      // Remove age query if no valid conditions
       if (Object.keys(query.age).length === 0) {
         delete query.age;
       }
@@ -139,7 +143,8 @@ export const getStatistics = async (filters = {}) => {
     }
     
     if (filters.tags && filters.tags.length > 0) {
-      query.tags = { $in: filters.tags };
+      const tagRegex = filters.tags.map(tag => tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+      query.tags = { $regex: tagRegex, $options: 'i' };
     }
     
     if (filters.paymentMethod && filters.paymentMethod.length > 0) {

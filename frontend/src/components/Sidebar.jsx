@@ -51,7 +51,7 @@ const Sidebar = () => {
           className={`nav-item ${activeSection === 'intake' ? 'active' : ''}`}
           onClick={() => setActiveSection('intake')}
         >
-          <img src="/icons/nexus.png" alt="Intake" className="nav-icon" />
+          <img src="/icons/intake.png" alt="Intake" className="nav-icon" />
           <span className="nav-label">Intake</span>
         </div>
 

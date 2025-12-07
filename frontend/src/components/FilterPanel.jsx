@@ -179,7 +179,13 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
         </div>
         {expandedSections.customerRegion && (
           <div className="filter-options">
-            {filterOptions.regions?.map(region => (
+            {filterOptions.regions?.sort((a, b) => {
+              const aChecked = filters.customerRegion?.includes(a);
+              const bChecked = filters.customerRegion?.includes(b);
+              if (aChecked && !bChecked) return -1;
+              if (!aChecked && bChecked) return 1;
+              return 0;
+            }).map(region => (
               <label key={region} className="filter-option">
                 <input
                   type="checkbox"
@@ -203,7 +209,13 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
         </div>
         {expandedSections.gender && (
           <div className="filter-options">
-            {filterOptions.genders?.map(gender => (
+            {filterOptions.genders?.sort((a, b) => {
+              const aChecked = filters.gender?.includes(a);
+              const bChecked = filters.gender?.includes(b);
+              if (aChecked && !bChecked) return -1;
+              if (!aChecked && bChecked) return 1;
+              return 0;
+            }).map(gender => (
               <label key={gender} className="filter-option">
                 <input
                   type="checkbox"
@@ -266,7 +278,13 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
         </div>
         {expandedSections.productCategory && (
           <div className="filter-options">
-            {filterOptions.categories?.map(category => (
+            {filterOptions.categories?.sort((a, b) => {
+              const aChecked = filters.productCategory?.includes(a);
+              const bChecked = filters.productCategory?.includes(b);
+              if (aChecked && !bChecked) return -1;
+              if (!aChecked && bChecked) return 1;
+              return 0;
+            }).map(category => (
               <label key={category} className="filter-option">
                 <input
                   type="checkbox"
@@ -290,7 +308,13 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
         </div>
         {expandedSections.tags && (
           <div className="filter-options scrollable">
-            {filterOptions.tags?.map(tag => (
+            {filterOptions.tags?.sort((a, b) => {
+              const aChecked = filters.tags?.includes(a);
+              const bChecked = filters.tags?.includes(b);
+              if (aChecked && !bChecked) return -1;
+              if (!aChecked && bChecked) return 1;
+              return 0;
+            }).map(tag => (
               <label key={tag} className="filter-option">
                 <input
                   type="checkbox"
@@ -314,7 +338,13 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
         </div>
         {expandedSections.paymentMethod && (
           <div className="filter-options">
-            {filterOptions.paymentMethods?.map(method => (
+            {filterOptions.paymentMethods?.sort((a, b) => {
+              const aChecked = filters.paymentMethod?.includes(a);
+              const bChecked = filters.paymentMethod?.includes(b);
+              if (aChecked && !bChecked) return -1;
+              if (!aChecked && bChecked) return 1;
+              return 0;
+            }).map(method => (
               <label key={method} className="filter-option">
                 <input
                   type="checkbox"
