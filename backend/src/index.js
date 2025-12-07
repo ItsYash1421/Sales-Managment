@@ -10,12 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 8001;
 
 // CORS configuration for production and development
+const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : undefined;
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        'https://truestate-frontend.onrender.com',
-        process.env.FRONTEND_URL
-      ].filter(Boolean)
+  origin: process.env.NODE_ENV === 'production'
+    ? [frontendUrl].filter(Boolean)
     : '*',
   credentials: true
 };
