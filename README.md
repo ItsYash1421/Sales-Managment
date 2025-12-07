@@ -2,6 +2,12 @@
 
 A full-stack web application for managing and analyzing retail sales data with advanced search, filtering, sorting, and pagination capabilities. Built to handle 100,000+ transaction records with MongoDB Atlas.
 
+## Live Demo
+
+**Frontend (Vercel):** https://sales-managment-frontend.vercel.app/
+
+**Backend API (Render):** https://sales-managment-wju9.onrender.com
+
 ## Overview
 Professional-grade sales management system demonstrating modern software engineering practices. Features real-time search, multi-select filtering, responsive UI, and optimized backend data processing with MongoDB integration.
 
@@ -25,7 +31,7 @@ Professional-grade sales management system demonstrating modern software enginee
 - Indexed queries for performance
 
 ## Search Implementation Summary
-Full-text case-insensitive search across Customer Name and Phone Number fields. Frontend implements 500ms debouncing to minimize API calls. Backend uses JavaScript string matching with O(n) complexity on in-memory dataset. Search operates seamlessly alongside active filters and sorting.
+Full-text case-insensitive search across Customer Name, Phone Number, Customer ID, and Product ID fields. Frontend implements 300ms debouncing to minimize API calls. Backend uses MongoDB regex queries for efficient searching. Search operates seamlessly alongside active filters and sorting.
 
 ## Filter Implementation Summary
 Multi-select filtering for categorical data (Customer Region, Gender, Product Category, Tags, Payment Method) using checkbox groups. Range-based filtering for Age (min/max inputs) and Date (date pickers). Filters applied sequentially using JavaScript array filter operations. All filters work independently and in combination, with state preserved across pagination.
