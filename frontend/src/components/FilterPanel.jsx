@@ -12,6 +12,7 @@ const FilterPanel = ({ filters, setFilters, filterOptions }) => {
     dateRange: false
   });
   
+  const [tempAgeMin, setTempAgeMin] = useState('');
   const [tempAgeMax, setTempAgeMax] = useState('');
   const [tempDateFrom, setTempDateFrom] = useState('');
   const [tempDateTo, setTempDateTo] = useState('');
